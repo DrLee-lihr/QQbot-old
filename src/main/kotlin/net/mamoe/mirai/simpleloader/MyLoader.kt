@@ -38,6 +38,7 @@ suspend fun commandCheck(event:MessageEvent) {
     if(info.substring(startIndex = 1,endIndex = 5)=="yxh ")yxh(event)
     if(info.substring(startIndex = 1,endIndex = 6)=="wiki ")wiki(event)
     if(info.substring(startIndex = 1,endIndex = 6)=="help ")help(event)
+    if(info.substring(startIndex = 1,endIndex = 7)=="mcbbs ")mcbbs(event)
 }
 
 suspend fun daquan(event:MessageEvent){
@@ -190,6 +191,16 @@ suspend fun yxh(event:MessageEvent){
     }
 }
 
+suspend fun mcbbs(event:MessageEvent){
+    val info=event.message.content.substring(7)
+    if(info=="-h"){
+        event.subject.sendMessage("\\mcbbs [内容] - 输出一个带site:mcbbs.net的百度搜索链接。")
+    }
+    else {
+        event.subject.sendMessage("https://www.baidu.com/s?ie=UTF-8&wd=site%3Amcbbs.net%20$info")
+    }
+}
+
 suspend fun help(event:MessageEvent){
     event.subject.sendMessage("""
         命令帮助索引：
@@ -197,6 +208,7 @@ suspend fun help(event:MessageEvent){
         \打拳 -h
         \wiki -h
         \yxh -h
+        \mcbbs -h
     """.trimIndent())
 }
 
@@ -209,7 +221,7 @@ suspend fun main() {
     val chinoDayDreamCafe=DrleeBot.getGroup(249787728)
     val abuseBotGroup=DrleeBot.getGroup(1044813316)
     val isTest=true
-    loadSuccessfullyInfo(abuseBotGroup,"Beta v0.0.6???")
+    loadSuccessfullyInfo(abuseBotGroup,"Beta v0.0.8")
 
 
     //mcwzhTeaHouseGroup.sendMessage("""
