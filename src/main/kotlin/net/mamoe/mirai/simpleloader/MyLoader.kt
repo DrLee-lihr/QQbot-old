@@ -33,9 +33,9 @@ suspend fun versionLogOutput(i:Group,log:String){
 
 suspend fun commandCheck(event:MessageEvent) {
     val info=event.message.content+"                            "
-    //if(info.substring(startIndex = 1,endIndex = 4)=="rc ") recentchange(event)
     if(info.substring(startIndex = 1,endIndex = 4)=="打拳 ")daquan(event)
     if(info.substring(startIndex = 1,endIndex = 5)=="fdj ")fdj(event)
+    if(info.substring(startIndex = 1,endIndex = 5)=="yxh ")yxh(event)
     if(info.substring(startIndex = 1,endIndex = 6)=="wiki ")wiki(event)
     if(info.substring(startIndex = 1,endIndex = 6)=="help ")help(event)
 }
@@ -151,47 +151,52 @@ suspend fun wiki(event: MessageEvent){
     }
 }
 
-suspend fun recentchange(event:MessageEvent){
-    val host = "https://minecraft-zh.gamepedia.com/api.php?action=query&list=recentchanges" +
-            "&rcprop=title|user|timestamp&rctype=edit|new&format=json&rclimit=5"
-    val client=OkHttpClient()
-    val request= Request.Builder()
-            .url(host)
-            .get()
-            .build()
-    val call=client.newCall(request)
-    val response = call.execute()
-    if(response.isSuccessful){
-        val body=response.body()
-        val string=body?.string()
-        println(string)
-        val parser: Parser = Parser.default()
-        var stringParser=parser.parse(StringBuilder(string)) as JsonObject
-        var query=stringParser.lookup<JsonObject>("query")
-        var recentchanges=query.lookup<JsonObject>("recentchanges")
-        var outputTemp:String=""
-        for(i in 0..4){
-            var changeTemp=recentchanges[i]
-            var user = changeTemp.getValue("user").toString()
-            var pageName=changeTemp.getValue("title").toString()
-            var time=changeTemp.getValue("timestamp").toString()
-            outputTemp+= "$pageName - $user - $time\n"
-            println(outputTemp)
-        }
-
-        event.subject.sendMessage(outputTemp)
+suspend fun yxh(event:MessageEvent){
+    val contentList : List<String> = event.message.content.substring(5).split(" ")
+    val listLength : Int = contentList.size
+    if(contentList[0]=="-h"){
+        event.subject.sendMessage("\\yxh [信息1] - 输出一个营销号信息。\n\\yxh [信息1] [信息2] - 输出一个营销号信息。")
+        return
     }
-    else{
-        event.subject.sendMessage("发生错误：土豆熟了。")
+    when {
+        listLength>=3 -> {
+            event.subject.sendMessage("爬.jpg")
+            return
+        }
+        listLength<=0 -> {
+            event.subject.sendMessage("爬.jpg")
+            return
+        }
+        listLength==1 -> {
+            val a=contentList[0]
+            event.subject.sendMessage("${a}是我们生活中所经常用到的东西，但很多人还不知道${a}是什么" +
+                    "，${a}的意思，${a}怎么用，${a}的来源出处，${a}的典故，${a}的方法，${a}的方式，为什么大家都在用${a}，" +
+                    "那么小编就来给大家详细介绍一下${a}是什么，${a}的意思，${a}怎么用，${a}的来源，${a}，${a}的方法，${a}的方式，" +
+                    "为什么大家都在用${a}，相信不少同学都很想了解，那么就快来跟小编一起来看看吧。希望大家看完这篇由小编精心整理的内容后，" +
+                    "能对相关知识有所了解，解决你的困惑。 好了，以上就是有关${a}的全部内容，" +
+                    "希望您在阅读完小编精心整理的这篇文章后能够有所收获。")
+            return
+        }
+        listLength==2 -> {
+            val b=contentList[0]
+            val c=contentList[1]
+            event.subject.sendMessage("""
+                ${c}是怎么回事呢？${b}相信大家都很熟悉，但是${c}是怎么回事呢？下面就让小编带大家了解一下吧。
+                其实${b}就是${c}了，大家可能会感到很惊讶，${b}为什么会沦落到如此地步了呢？但事实就是这样，小编也感到非常惊讶。
+                那么这就是关于${c}的事情了，大家有什么想法呢？欢迎在评论区告诉小编一起讨论哦。
+            """.trimIndent())
+            return
+        }
     }
 }
 
 suspend fun help(event:MessageEvent){
     event.subject.sendMessage("""
-        命令帮助列表：
+        命令帮助索引：
         \fdj -h
         \打拳 -h
         \wiki -h
+        \yxh -h
     """.trimIndent())
 }
 
