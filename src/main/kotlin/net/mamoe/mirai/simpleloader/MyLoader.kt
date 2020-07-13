@@ -214,7 +214,7 @@ suspend fun help(event:MessageEvent){
 
 suspend fun main() {
     val qqId = 465993851L//Bot的QQ号，需为Long类型，在结尾处添加大写L
-    val password = "hr812403"//Bot的密码
+    val password = "1145141919810"//Bot的密码
     val DrleeBot = Bot(qqId, password){ fileBasedDeviceInfo() }.alsoLogin()//新建Bot并登录
     val mcwzhTeaHouseGroup = DrleeBot.getGroup(657876815)
     val robotDebugGroup=DrleeBot.getGroup(738829671)
